@@ -11,9 +11,9 @@ class Board
     def populate_board
         board.map.with_index do |row, idx|
             if idx == 0 || idx == 7
-                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new }
+                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new("c",self,[[idx,c_idx]]) }
             elsif idx == 1 || idx == 6
-                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new }
+                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new("c",self,[[idx,c_idx]]) }
             end
         end
     end

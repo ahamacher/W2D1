@@ -6,7 +6,7 @@ class Display
     attr_reader :board
     attr_accessor :cursor
 
-    def initialize()
+    def initialize
         @board = Board.new 
         @cursor = Cursor.new([0,0],board)
     end
@@ -43,7 +43,7 @@ class Display
     end
 end
 
-if __FILE__ == $PROGRAM_NAME
-    test = Display.new
-    test.show
-end
+# if __FILE__ == $PROGRAM_NAME
+#     test = Display.new
+#     test.show
+# end
