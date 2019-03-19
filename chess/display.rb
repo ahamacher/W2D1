@@ -1,6 +1,7 @@
 require 'colorize'
 require_relative "board.rb"
 require_relative "cursor.rb"
+require_relative "piece.rb"
 
 class Display
     attr_reader :board
@@ -18,14 +19,14 @@ class Display
             white = row_i.even?
 
             row.each_with_index do |col, col_i|
-                if cursor.cursor_pos == [row_i, col_i]
-                    row_output += "  ".colorize(:blue).colorize( :background => :red)
+                if cursor.cursor_pos == [row_i,col_i]
+                    row_output += board[[row_i,col_i]].to_s.colorize(:blue).colorize( :background => :red)
                     white = !white
                 elsif white
-                    row_output += "  ".colorize(:blue).colorize( :background => :white)
+                    row_output += board[[row_i,col_i]].to_s.colorize(:blue).colorize( :background => :white)
                     white = false
                 else
-                    row_output += "  ".colorize(:white).colorize( :background => :blue)
+                    row_output += board[[row_i,col_i]].to_s.colorize(:white).colorize( :background => :blue)
                     white = true
                 end
             end
@@ -43,7 +44,7 @@ class Display
     end
 end
 
-# if __FILE__ == $PROGRAM_NAME
-#     test = Display.new
-#     test.show
-# end
+if __FILE__ == $PROGRAM_NAME
+    test = Display.new
+    test.show
+end

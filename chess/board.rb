@@ -1,19 +1,22 @@
-require_relative "piece.rb"
+# require_relative "piece.rb"
 require "byebug"
+require "colorize"
+require_relative "piece.rb"
 
 class Board
     attr_accessor :board
     def initialize
-        @board = Array.new(8) { Array.new(8, nil) }
+        nil_piece = NullPiece.instance
+        @board = Array.new(8) { Array.new(8, nil_piece) }
         self.populate_board
     end
 
     def populate_board
         board.map.with_index do |row, idx|
             if idx == 0 || idx == 7
-                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new("c",self,[[idx,c_idx]]) }
+                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new("♔".colorize(:white),self,[[idx,c_idx]]) }
             elsif idx == 1 || idx == 6
-                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new("c",self,[[idx,c_idx]]) }
+                row.each_with_index { |tile, c_idx| row[c_idx] = Piece.new("♚".colorize(:black),self,[[idx,c_idx]]) }
             end
         end
     end

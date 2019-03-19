@@ -1,11 +1,15 @@
 #modules
-require_relative "board.rb"
+require 'byebug'
+require "singleton"
+
 
 module Slideable
     # move_directions = { :queen => "both", :rook => "straight", :bishop => "diagonal" }
     #return [dx, dy] of positionals
+
     HORIZONTAL = [[0,1],[0,-1],[1,0],[-1,0]]
     DIAGONAL = [[1,1],[-1,1],[-1,-1],[1,-1]]
+
 
     def move_dirs
         raise "move directions not set for piece"
@@ -18,11 +22,10 @@ module Slideable
 
     def grow_unblocked_moves(dir)
         new_pos = self.pos 
-        
-        dir
         possible_positions = []
+        # debugger
         until board[new_pos] != nil || !board.valid_pos?(new_pos)
-            new_pos = [new_pos[0]+dir[0],new_pos[1]+dir[1]]
+            new_pos = [ new_pos[0] + dir[0], new_pos[1] + dir[1] ]
             
             possible_positions << new_pos
         end
@@ -32,6 +35,10 @@ end
 
 module Stepable
     #king #knight
+    def moves
+        all_steps = move_dirs
+        p all_steps
+    end
 end
 
 #classes 
@@ -39,14 +46,14 @@ class Piece
     # add current position
     # add color 
     attr_reader :pos, :board 
-    def initialize(*color, board, pos)
-        @color = color
+    def initialize(color, board, pos)
+        @color = color 
         @board = board
         @pos = pos
     end
 
     def to_s
-        @color
+       " "+ @color+ " "
     end
 
     def empty?
@@ -74,21 +81,20 @@ class Piece
     #to_s function to print
 end
 
-# class NullPiece < Piece
-#     include Singleton
-#     attr_reader 
-#     def initialize
-#         @color = " "
-#     end
+class NullPiece < Piece
+    include Singleton
+    attr_reader :color
+    def initialize
+        @color = " "
+    end
 
-# end
+end
 
 class Queen < Piece
     include Slideable
     
     def move_dirs 
         possible_steps = HORIZONTAL + DIAGONAL 
-        p possible_steps
         all_possible_positions = []
         possible_steps.each do | direction |
             all_possible_positions += grow_unblocked_moves(direction)
@@ -97,3 +103,56 @@ class Queen < Piece
     end
 
 end
+
+class Bishop < Piece
+    include Slideable
+
+    def move_dirs 
+        possible_steps = DIAGONAL 
+        all_possible_positions = []
+        possible_steps.each do | direction |
+            all_possible_positions += grow_unblocked_moves(direction)
+        end
+        all_possible_positions
+    end
+end
+
+class Rook < Piece
+    include Slideable
+
+    def move_dirs 
+        possible_steps = HORIZONTAL 
+        all_possible_positions = []
+        possible_steps.each do | direction |
+            all_possible_positions += grow_unblocked_moves(direction)
+        end
+        all_possible_positions
+    end
+end
+
+class Knight < Piece 
+    include Stepable
+
+    def move_dirs
+        steps = [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]
+        possible_moves = [] 
+        steps.each do |direction|
+            possible_moves << [self.pos[0]+direction[0],self.pos[1]+direction[1]]
+        end
+        possible_moves
+    end
+end
+
+class King < Piece 
+    include Stepable
+
+    def move_dirs 
+        steps = [[1,0],[0,1],[-1,0],[0,-1],[-1,-1],[-1,1],[1,-1],[1,1]]
+        possible_moves = []
+        steps.each do |direction|
+            possible_moves << [self.pos[0]+direction[0],self.pos[1]+direction[1]]
+        end
+        possible_moves
+    end
+end
+
