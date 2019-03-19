@@ -18,6 +18,13 @@ class Board
         end
     end
 
+    def valid_pos?(check_pos)
+        return false if check_pos[0] < 0 || check_pos[0] > 7
+        return false if check_pos[1] < 0 || check_pos[1] > 7
+        return true
+    end
+
+
     def move_piece(start_pos,end_pos)
         # expecting positions to come in array ex. [0,0] 
         if self[start_pos] && self[end_pos].nil?

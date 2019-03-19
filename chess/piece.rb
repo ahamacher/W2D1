@@ -3,5 +3,7 @@ class Piece
     # add color 
     def initialize 
     end
-
+    
+    
+    #to_s function to print
 end

@@ -76,8 +76,26 @@ class Cursor
   end
 
   def handle_key(key)
+    case key 
+    when :return || :space 
+      @cursor_pos
+    when :left 
+      update_pos(MOVES[:left])
+    when :right 
+      update_pos(MOVES[:right])
+    when :down
+      update_pos(MOVES[:down])
+    when :up
+      update_pos(MOVES[:up]) 
+    when :ctrl_c 
+      Process.exit(0)
+    end
   end
 
   def update_pos(diff)
+    temp_pos = @cursor_pos
+    temp_pos[0] += diff[0]
+    temp_pos[1] += diff[1]
+    @cursor_pos = temp_pos if @board.valid_pos?(temp_pos)
   end
 end
