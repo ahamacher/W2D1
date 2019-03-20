@@ -156,3 +156,38 @@ class King < Piece
     end
 end
 
+class Pawn < Piece
+
+    def initialize
+        super(color, board, pos)
+        @first_move = true
+    end
+
+    def forward_dir
+        starting_pos = pos
+        if starting_pos.first == 1
+            @dir = 1
+        else
+            @dir = -1
+        end
+    end
+
+    def forward_steps
+        initial_pos = pos
+        potential_moves = []
+        if @first_move == true
+            forward_dir
+            (1..2).each do |step|
+                initial_pos[0] += 1 * @dir
+                potential_moves << initial_pos
+            end
+            @first_move = false
+        else
+            initial_pos[0] += 1 * @dir
+            potential_moves << initial_pos
+        end
+        possible_moves
+    end
+
+end
+
